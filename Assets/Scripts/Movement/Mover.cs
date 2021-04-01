@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using RPG.Core;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UIElements;
+
 
 
 namespace RPG.Movement
@@ -36,11 +34,11 @@ namespace RPG.Movement
         }
 
 
-        public void MoveTo(Vector3 dest)
+        public void MoveTo(Vector3 dest, float stoppingDistance)
         {
+            meshAgent.stoppingDistance = stoppingDistance;
             meshAgent.destination = dest;
         }
     }
-
 }
 

@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using RPG.Movement;
-using System;
 using RPG.Combat;
 
 namespace RPG.Control
@@ -11,6 +8,7 @@ namespace RPG.Control
     {
         private Mover mover;
         private Fighter fighter;
+        private const float stopWalkingDistance = 0;
         void Start()
         {
             mover = GetComponent<Mover>();
@@ -52,7 +50,8 @@ namespace RPG.Control
             {
                 if (Input.GetMouseButton(0))
                 {
-                    mover.MoveTo(hit.point);
+                    fighter.Cancel();
+                    mover.MoveTo(hit.point, stopWalkingDistance);
                 }
 
                 return true;
