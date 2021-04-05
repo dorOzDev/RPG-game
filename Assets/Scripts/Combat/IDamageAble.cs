@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace RPG.Combat
 {
-    interface IDamageAble
+    interface IDamageable
     {
         void TakeDamage(float damage);
     }

@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using RPG.Movement;
 using RPG.Combat;
+using RPG.Core;
+using RPG.Characters;
 
 namespace RPG.Control
 {
@@ -32,7 +34,8 @@ namespace RPG.Control
 
             foreach (RaycastHit hit in hits)
             {
-                CombatTarget combatTarget = hit.transform.gameObject.GetComponent<CombatTarget>();
+                Enemy combatTarget = hit.transform.gameObject.GetComponent<Enemy>();
+                
                 if (combatTarget == null) continue;
 
                 if (Input.GetMouseButtonDown(0)) fighter.Attack(combatTarget);

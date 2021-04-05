@@ -1,12 +1,18 @@
-﻿using RPG.Movement;
+﻿using RPG.Characters;
+using RPG.Movement;
+using System;
 using System.Collections;
 using UnityEngine;
 
 namespace RPG.Combat
 {
+    
     public class Fighter : MonoBehaviour
     {
-        private CombatTarget target;
+        private const string ATTACK = "attack";
+        private const string STOP_ATTACK = "stopAttack";
+
+        private Enemy target;
         private Mover mover;
         private Animator animator;
 
@@ -23,20 +29,26 @@ namespace RPG.Combat
             mover = GetComponent<Mover>();
             animator = GetComponent<Animator>();
         }
-        private void Update()
+
+        private bool CanAttack()
         {
-            
-            if (target != null)
+            return target != null && target.IsAlive;
+        }
+        private void Update()
+        {   
+            if (CanAttack())
             {
                 mover.MoveTo(target.transform.position, weaponRange);
-                
-                StartCoroutine(TriggetAttackAnimation(target.transform.position));
+
+                transform.LookAt(target.transform);
+
+                StartCoroutine(TriggerAttackAnimation(target.transform.position));
             }
         }
 
-        public void Attack(CombatTarget combatTarget)
+        public void Attack(Enemy target)
         {
-            target = combatTarget;
+            this.target = target;
         }
 
         private IEnumerator StartRestBetweenAttacksCountDown()
@@ -51,7 +63,7 @@ namespace RPG.Combat
             isInRest = false;
         }
 
-        private IEnumerator TriggetAttackAnimation(Vector3 enemyPosition)
+        private IEnumerator TriggerAttackAnimation(Vector3 enemyPosition)
         {
             while(Vector3.Distance(transform.position, enemyPosition) > weaponRange)
             {
@@ -60,19 +72,35 @@ namespace RPG.Combat
 
             if (!isInRest) 
             {
-                animator.SetTrigger("attack");
-                isInRest = true;
-                StartCoroutine(StartRestBetweenAttacksCountDown());
+                TriggerAttack();
             }
+        }
+
+        private void StopAttack()
+        {
+            animator.ResetTrigger(ATTACK);
+            animator.SetTrigger(STOP_ATTACK);
+        }
+
+        private void TriggerAttack()
+        {
+            animator.ResetTrigger(STOP_ATTACK);
+            animator.SetTrigger(ATTACK);
+
+            isInRest = true;
+            StartCoroutine(StartRestBetweenAttacksCountDown());
         }
 
         public void Cancel()
         {
+            StopAttack();
             target = null;
         }
         // Animation event(is called once the animator SetsTrigget of "attack"
         void Hit()
         {
+            if (target == null) return;
+
             target.TakeDamage(damage);
         }
     }

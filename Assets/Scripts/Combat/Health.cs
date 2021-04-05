@@ -9,18 +9,16 @@ namespace RPG.Combat
         private float m_healthPoints;
         public float HealthPoints => m_healthPoints;
 
-        private GameObject gameObject;
 
-        public static Health CreateHealth(float health, GameObject gameObject)
+        public static Health CreateHealth(float health)
         {
             Health healthScript = ScriptableObject.CreateInstance<Health>();
-            healthScript.Init(health, gameObject);
+            healthScript.Init(health);
             return healthScript;
         }
 
-        private void Init(float health, GameObject gameObject)
+        private void Init(float health)
         {
-            this.gameObject = gameObject;
             SetHealth(health);
         }
 
@@ -32,10 +30,6 @@ namespace RPG.Combat
         public void TakeDamage(float damage)
         {
             m_healthPoints = Mathf.Max(m_healthPoints - damage, 0);
-            if(m_healthPoints == 0)
-            {
-                // Raise event this object should be killed.
-            }
         }
     }
 }
