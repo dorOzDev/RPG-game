@@ -24,6 +24,11 @@ namespace RPG.Movement
             UpdateAnimator();
         }
 
+        public void DisableMover()
+        {
+            meshAgent.enabled = false;
+        }
+
         private void UpdateAnimator()
         {
             Vector3 velocity = meshAgent.velocity;

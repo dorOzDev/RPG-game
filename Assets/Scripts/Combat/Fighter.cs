@@ -1,4 +1,5 @@
 ﻿using RPG.Characters;
+using RPG.Core;
 using RPG.Movement;
 using System;
 using System.Collections;
@@ -12,13 +13,14 @@ namespace RPG.Combat
         private const string ATTACK = "attack";
         private const string STOP_ATTACK = "stopAttack";
 
-        private Enemy target;
+        private BaseCharacter target;
         private Mover mover;
         private Animator animator;
+        private bool shouldAttack = false;
 
         [SerializeField] private float damage = 3f;
 
-        [SerializeField] private float weaponRange = 2f;
+        [SerializeField] private float weaponRange = 1f;
 
         [SerializeField] private float timeBetweenAttacks = 3f;
 
@@ -32,7 +34,7 @@ namespace RPG.Combat
 
         private bool CanAttack()
         {
-            return target != null && target.IsAlive;
+            return shouldAttack && target != null && target.IsAlive;
         }
         private void Update()
         {   
@@ -42,12 +44,13 @@ namespace RPG.Combat
 
                 transform.LookAt(target.transform);
 
-                StartCoroutine(TriggerAttackAnimation(target.transform.position));
+                StartCoroutine(TriggerAttackAnimation());
             }
         }
 
-        public void Attack(Enemy target)
+        public void Attack(BaseCharacter target)
         {
+            shouldAttack = true;
             this.target = target;
         }
 
@@ -63,9 +66,9 @@ namespace RPG.Combat
             isInRest = false;
         }
 
-        private IEnumerator TriggerAttackAnimation(Vector3 enemyPosition)
+        private IEnumerator TriggerAttackAnimation()
         {
-            while(Vector3.Distance(transform.position, enemyPosition) > weaponRange)
+            while (!IsInAttackRange())
             {
                 yield return null;
             }
@@ -76,10 +79,9 @@ namespace RPG.Combat
             }
         }
 
-        private void StopAttack()
+        private bool IsInAttackRange()
         {
-            animator.ResetTrigger(ATTACK);
-            animator.SetTrigger(STOP_ATTACK);
+            return Vector3.Distance(transform.position, target.transform.position) <= weaponRange;
         }
 
         private void TriggerAttack()
@@ -91,17 +93,18 @@ namespace RPG.Combat
             StartCoroutine(StartRestBetweenAttacksCountDown());
         }
 
-        public void Cancel()
+        public void CancelAttack()
         {
-            StopAttack();
-            target = null;
+            shouldAttack = false;
+            animator.ResetTrigger(ATTACK);
+            animator.SetTrigger(STOP_ATTACK);
         }
         // Animation event(is called once the animator SetsTrigget of "attack"
         void Hit()
         {
             if (target == null) return;
-
             target.TakeDamage(damage);
+
         }
     }
 }

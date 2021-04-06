@@ -8,13 +8,15 @@ namespace RPG.Control
 {
     public class PlayerController : MonoBehaviour
     {
-        private Mover mover;
         private Fighter fighter;
+        private Mover mover;
+        private Player player;
         private const float stopWalkingDistance = 0;
         void Start()
         {
-            mover = GetComponent<Mover>();
+            player = GetComponent<Player>();
             fighter = GetComponent<Fighter>();
+            mover = GetComponent<Mover>();
         }
 
         private static Ray GetMouseRay()
@@ -24,6 +26,7 @@ namespace RPG.Control
 
         void Update()
         {
+            if (!player.IsAlive) return;
             if (InteractWithCombat()) return;
             if (InteractWithMovement()) return;
         }
@@ -34,7 +37,7 @@ namespace RPG.Control
 
             foreach (RaycastHit hit in hits)
             {
-                Enemy combatTarget = hit.transform.gameObject.GetComponent<Enemy>();
+                BaseCharacter combatTarget = hit.transform.gameObject.GetComponent<Enemy>();
                 
                 if (combatTarget == null) continue;
 
@@ -53,7 +56,7 @@ namespace RPG.Control
             {
                 if (Input.GetMouseButton(0))
                 {
-                    fighter.Cancel();
+                    fighter.CancelAttack();
                     mover.MoveTo(hit.point, stopWalkingDistance);
                 }
 

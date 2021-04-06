@@ -1,18 +1,17 @@
 ﻿using RPG.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using UnityEditor;
 using UnityEngine;
 
 namespace RPG.Characters
 {
     class Player : BaseCharacter
     {
+        public float Health => healthSystem.HealthPoints;
         protected override Collider GetCharacterCollider()
         {
-            return null;
+            return GetComponent<CapsuleCollider>();
         }
     }
 }
+
+

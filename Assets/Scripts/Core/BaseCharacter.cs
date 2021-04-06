@@ -1,4 +1,5 @@
 ﻿using RPG.Combat;
+using RPG.Movement;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,15 +11,17 @@ namespace RPG.Core
     public abstract class BaseCharacter : MonoBehaviour
     {
         [SerializeField] private float initialHealthPoints = 100f;
-        protected Health healthSystem;
+        protected Health healthSystem { get; private set; }
 
         private Animator animator;
         private Collider characterCollider;
+        private Mover mover;
 
         public bool IsAlive { get; private set; } = true;
 
         private void Start()
         {
+            mover = GetComponent<Mover>();
             animator = GetComponent<Animator>();
         }
 
@@ -43,6 +46,7 @@ namespace RPG.Core
         {
             animator.SetTrigger("die");
             characterCollider.enabled = false;
+            mover.DisableMover();
             IsAlive = false;
         }
 
