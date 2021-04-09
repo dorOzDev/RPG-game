@@ -1,6 +1,7 @@
 ﻿using RPG.Characters;
 using RPG.Combat;
 using RPG.Movement;
+using RPG.StateManagment;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,69 +10,108 @@ using UnityEngine;
 
 namespace RPG.Control
 {
-    public class AIController : MonoBehaviour
+    public class AIController : BaseController
     {
-        [SerializeField] private float chaseDistance = 5f;
-        [SerializeField] private float suspiciousDuration = 2f;
+
         private GameObject playerGameObject;
         private Player player;
         private Enemy enemy;
         private Fighter fighter;
         private Mover mover;
         private Vector3 initPos;
+        private IEnumerator suspiciousCoroutine;
 
-        private void Start()
+        public delegate void OnSuspicousFinishedDelegate();
+        public event OnSuspicousFinishedDelegate OnSuspicousFinishedEvent;
+
+        private void Awake()
         {
             playerGameObject = GameObject.FindGameObjectWithTag("Player");
             player = playerGameObject.GetComponent<Player>();
             enemy = GetComponent<Enemy>();
-            initPos = transform.position;
             fighter = GetComponent<Fighter>();
             mover = GetComponent<Mover>();
         }
-        private void Update()
+
+        private void Start()
         {
-            if (!enemy.IsAlive)
-            {
-                fighter.CancelAttack();
-                return;
-            }
-            AttackPlayer();
+            initPos = transform.position;
+            
         }
 
-        private void AttackPlayer()
+        private void DeadBehaviour()
         {
-            if (IsPlayerInRange() && player.IsAlive)
-            {
-                fighter.Attack(player);
-            }
-            else
-            {
-                fighter.CancelAttack();
-                mover.MoveTo(initPos, 0);
-                //StartCoroutine(WaitInLocation());
-            }
+            fighter.CancelAttack();
+            mover.DisableMover();
         }
 
-        IEnumerator WaitInLocation()
+        private void PatrolBheaviour()
+        {
+            fighter.CancelAttack();
+            mover.MoveTo(initPos, 0);
+        }
+        private void AttackPlayerBehaviour()
+        {
+            fighter.Attack(player);
+        }
+
+        IEnumerator ActivateSuspicousBehaviour()
         {
             float totalTime = 0;
-            while (totalTime <= suspiciousDuration)
+            while (totalTime <= enemy.SuspiciousDuration)
             {
                 totalTime += Time.deltaTime;
                 yield return null;
             }
+
+            OnSuspicousFinishedEvent?.Invoke();
         }
 
-        private bool IsPlayerInRange()
+        public override void OnStateChanged(Enum state)
         {
-            return Vector3.Distance(transform.position, playerGameObject.transform.position) <= chaseDistance;
+            EnemyState enemyState = (EnemyState) state;
+
+            switch (enemyState) {
+
+                case EnemyState.Dead:
+                {
+                    DeadBehaviour();
+                    return;
+                }
+
+                case EnemyState.Attack:
+                {
+                    AttackPlayerBehaviour();
+                    break;
+                }
+
+                case EnemyState.Patrol:
+                {
+                    PatrolBheaviour();
+                    break;
+                }
+
+                case EnemyState.Suspicious:
+                {
+                    SuspiciousBehaviour();
+                    break;
+                }
+            }
         }
 
-        private void OnDrawGizmosSelected()
+        private void SuspiciousBehaviour()
         {
-            Gizmos.color = Color.blue;
-            Gizmos.DrawWireSphere(gameObject.transform.position, chaseDistance);
+            fighter.CancelAttack();
+
+            CancelPreviousCoroutine();
+
+            suspiciousCoroutine = ActivateSuspicousBehaviour();
+            StartCoroutine(suspiciousCoroutine);
+        }
+
+        private void CancelPreviousCoroutine()
+        {
+            if (suspiciousCoroutine != null) StopCoroutine(suspiciousCoroutine);
         }
     }
 

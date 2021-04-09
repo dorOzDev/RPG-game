@@ -15,13 +15,11 @@ namespace RPG.Core
 
         private Animator animator;
         private Collider characterCollider;
-        private Mover mover;
 
         public bool IsAlive { get; private set; } = true;
 
         private void Start()
         {
-            mover = GetComponent<Mover>();
             animator = GetComponent<Animator>();
         }
 
@@ -30,8 +28,6 @@ namespace RPG.Core
             healthSystem = Health.CreateHealth(initialHealthPoints);
             characterCollider = GetCharacterCollider();
         }
-
-        
 
         public void TakeDamage(float damage)
         {
@@ -42,11 +38,10 @@ namespace RPG.Core
             }
         }
 
-        private void TriggerDeath()
+         protected virtual void TriggerDeath()
         {
             animator.SetTrigger("die");
             characterCollider.enabled = false;
-            mover.DisableMover();
             IsAlive = false;
         }
 

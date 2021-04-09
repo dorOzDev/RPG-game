@@ -9,7 +9,8 @@ using UnityEngine;
 
 namespace RPG.Control
 {
-    public class BaseController : MonoBehaviour
+    public abstract class BaseController : MonoBehaviour
     {
+        public abstract void OnStateChanged(Enum state);
     }
 }

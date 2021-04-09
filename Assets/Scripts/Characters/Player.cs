@@ -6,7 +6,7 @@ namespace RPG.Characters
 {
     class Player : BaseCharacter
     {
-        public float Health => healthSystem.HealthPoints;
+        [SerializeField]public float Health => healthSystem.HealthPoints;
         protected override Collider GetCharacterCollider()
         {
             return GetComponent<CapsuleCollider>();

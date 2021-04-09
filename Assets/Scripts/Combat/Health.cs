@@ -7,7 +7,7 @@ namespace RPG.Combat
     public class Health : ScriptableObject
     {
         private float m_healthPoints;
-        public float HealthPoints => m_healthPoints;
+        [SerializeField] public float HealthPoints => m_healthPoints;
 
 
         public static Health CreateHealth(float health)

@@ -26,7 +26,7 @@ namespace RPG.Combat
 
         private bool isInRest = false;
 
-        private void Start()
+        private void Awake()
         {
             mover = GetComponent<Mover>();
             animator = GetComponent<Animator>();
@@ -37,7 +37,7 @@ namespace RPG.Combat
             return shouldAttack && target != null && target.IsAlive;
         }
         private void Update()
-        {   
+        {
             if (CanAttack())
             {
                 mover.MoveTo(target.transform.position, weaponRange);

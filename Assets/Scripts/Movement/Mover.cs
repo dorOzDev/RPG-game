@@ -13,7 +13,7 @@ namespace RPG.Movement
         private NavMeshAgent meshAgent;
         private Animator animator;
 
-        void Start()
+        private void Awake()
         {
             meshAgent = GetComponent<NavMeshAgent>();
             animator = GetComponentInChildren<Animator>();
