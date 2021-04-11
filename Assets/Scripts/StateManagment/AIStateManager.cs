@@ -77,7 +77,7 @@ namespace RPG.StateManagment
 
         void Start()
         {
-            //state = EnemyState.Patrol;
+            state = EnemyState.Patrol;
         }
 
     }

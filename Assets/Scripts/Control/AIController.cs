@@ -12,20 +12,34 @@ namespace RPG.Control
 {
     public class AIController : BaseController
     {
-
+        [SerializeField]
+        private PatrolPath patrolPath;
         private GameObject playerGameObject;
         private Player player;
         private Enemy enemy;
         private Fighter fighter;
         private Mover mover;
-        private Vector3 initPos;
         private IEnumerator suspiciousCoroutine;
+
+        private IEnumerator resetPatrolCoroutine;
+        private IEnumerator dwelInWayPointCoroutine;
+
+        [SerializeField]
+        private EmptyPatrolPathGenerator patrolPathGenerator;
+
+        [SerializeField]
+        private float toleranceStopDistance = 0.5f;
+
+        [SerializeField]
+        private float dwelInPoint = 1f;
 
         public delegate void OnSuspicousFinishedDelegate();
         public event OnSuspicousFinishedDelegate OnSuspicousFinishedEvent;
 
         private void Awake()
         {
+            CatchCoRoutines();
+            CatchPatrolPath();
             playerGameObject = GameObject.FindGameObjectWithTag("Player");
             player = playerGameObject.GetComponent<Player>();
             enemy = GetComponent<Enemy>();
@@ -33,10 +47,27 @@ namespace RPG.Control
             mover = GetComponent<Mover>();
         }
 
+        private void CatchPatrolPath()
+        {
+            if (patrolPath == null) patrolPath = patrolPathGenerator.CreateEmptyPatrolPath(transform.position);
+        }
+
         private void Start()
         {
-            initPos = transform.position;
-            
+            SpawnEnemyAtInitPath();
+        }
+
+        private void SpawnEnemyAtInitPath()
+        {
+            transform.position = patrolPath.GetNextWayPoint();
+        }
+
+        // The catching is simply to avoid null checks
+        private void CatchCoRoutines()
+        {
+            suspiciousCoroutine = ActivateSuspicousBehaviour();
+            resetPatrolCoroutine = StartPatrolBehaviour();
+            dwelInWayPointCoroutine = StartDwelInPoint();
         }
 
         private void DeadBehaviour()
@@ -45,14 +76,53 @@ namespace RPG.Control
             mover.DisableMover();
         }
 
-        private void PatrolBheaviour()
+        private void PatrolBehaviour()
         {
             fighter.CancelAttack();
-            mover.MoveTo(initPos, 0);
+
+            resetPatrolCoroutine = StartPatrolBehaviour();
+
+            StartCoroutine(resetPatrolCoroutine);
         }
+
+        private IEnumerator StartPatrolBehaviour()
+        {
+            Vector3 nextWayPoint = patrolPath.GetNextWayPoint();
+            
+            mover.MoveTo(nextWayPoint);
+
+            while(Vector3.Distance(transform.position, nextWayPoint) > toleranceStopDistance)
+            {
+                yield return null;
+            }
+
+            dwelInWayPointCoroutine = StartDwelInPoint();
+            StartCoroutine(dwelInWayPointCoroutine);
+        }
+
+        private IEnumerator StartDwelInPoint()
+        {
+            float totalTime = 0;
+            while(totalTime <= dwelInPoint)
+            {
+                totalTime += Time.deltaTime;
+                yield return null;
+            }
+
+            resetPatrolCoroutine = StartPatrolBehaviour();
+            StartCoroutine(resetPatrolCoroutine);
+        }
+
         private void AttackPlayerBehaviour()
         {
+            CancelPatrolBehaviour();
             fighter.Attack(player);
+        }
+
+        private void CancelPatrolBehaviour()
+        {
+            StopCoroutine(resetPatrolCoroutine);
+            StopCoroutine(dwelInWayPointCoroutine);
         }
 
         IEnumerator ActivateSuspicousBehaviour()
@@ -87,7 +157,7 @@ namespace RPG.Control
 
                 case EnemyState.Patrol:
                 {
-                    PatrolBheaviour();
+                    PatrolBehaviour();
                     break;
                 }
 
@@ -103,15 +173,11 @@ namespace RPG.Control
         {
             fighter.CancelAttack();
 
-            CancelPreviousCoroutine();
+            StopCoroutine(suspiciousCoroutine);
 
             suspiciousCoroutine = ActivateSuspicousBehaviour();
-            StartCoroutine(suspiciousCoroutine);
-        }
 
-        private void CancelPreviousCoroutine()
-        {
-            if (suspiciousCoroutine != null) StopCoroutine(suspiciousCoroutine);
+            StartCoroutine(suspiciousCoroutine);
         }
     }
 

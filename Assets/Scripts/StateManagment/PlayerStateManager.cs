@@ -13,4 +13,12 @@ namespace RPG.StateManagment
             
         }
     }
+
+    public enum PlayerState
+    {
+        None,
+        Attack,
+        Move,
+        Dead
+    }
 }

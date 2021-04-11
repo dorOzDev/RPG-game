@@ -3,6 +3,7 @@ using RPG.Movement;
 using RPG.Combat;
 using RPG.Core;
 using RPG.Characters;
+using UnityEngine.UIElements;
 
 namespace RPG.Control
 {
@@ -12,6 +13,7 @@ namespace RPG.Control
         private Mover mover;
         private Player player;
         private const float stopWalkingDistance = 0;
+
         void Start()
         {
             player = GetComponent<Player>();
@@ -37,11 +39,14 @@ namespace RPG.Control
 
             foreach (RaycastHit hit in hits)
             {
-                BaseCharacter combatTarget = hit.transform.gameObject.GetComponent<Enemy>();
+                Enemy combatTarget = hit.transform.gameObject.GetComponent<Enemy>();
                 
                 if (combatTarget == null) continue;
 
-                if (Input.GetMouseButtonDown(0)) fighter.Attack(combatTarget);
+                if (Input.GetMouseButton(0))
+                {
+                    fighter.Attack(combatTarget);
+                }
 
                 return true;
             }
@@ -54,6 +59,7 @@ namespace RPG.Control
             RaycastHit hit;
             if (Physics.Raycast(GetMouseRay(), out hit))
             {
+
                 if (Input.GetMouseButton(0))
                 {
                     fighter.CancelAttack();
