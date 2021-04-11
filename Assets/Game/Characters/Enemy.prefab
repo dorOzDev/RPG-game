@@ -27,8 +27,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialHealthPoints: 20.59
+  runningSpeed: 6
   chaseDistance: 5
   suspiciousDuration: 2
+  patrolSpeed: 4
 --- !u!114 &3692600565770353518
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44,6 +46,8 @@ MonoBehaviour:
   patrolPath: {fileID: 0}
   patrolPathGenerator: {fileID: 11400000, guid: 51ba5ce825b22c542b68ec63352e3aea,
     type: 2}
+  toleranceStopDistance: 0.5
+  dwelInPoint: 1
 --- !u!114 &8199620661538934021
 MonoBehaviour:
   m_ObjectHideFlags: 0

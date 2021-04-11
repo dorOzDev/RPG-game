@@ -45,7 +45,7 @@ namespace RPG.Control
 
                 if (Input.GetMouseButton(0))
                 {
-                    fighter.Attack(combatTarget);
+                    fighter.Attack(combatTarget, player);
                 }
 
                 return true;
@@ -63,7 +63,7 @@ namespace RPG.Control
                 if (Input.GetMouseButton(0))
                 {
                     fighter.CancelAttack();
-                    mover.MoveTo(hit.point, stopWalkingDistance);
+                    mover.MoveTo(hit.point, player.RunningSpeed, stopWalkingDistance);
                 }
 
                 return true;

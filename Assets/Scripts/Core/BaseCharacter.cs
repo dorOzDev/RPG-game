@@ -11,6 +11,11 @@ namespace RPG.Core
     public abstract class BaseCharacter : MonoBehaviour
     {
         [SerializeField] private float initialHealthPoints = 100f;
+        
+        [SerializeField]
+        protected float runningSpeed = 4f;
+
+        public float RunningSpeed => runningSpeed;
         protected Health healthSystem { get; private set; }
 
         private Animator animator;

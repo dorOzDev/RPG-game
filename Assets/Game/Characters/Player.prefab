@@ -39,6 +39,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialHealthPoints: 100
+  runningSpeed: 8
 --- !u!1001 &6054553083507035534
 PrefabInstance:
   m_ObjectHideFlags: 0

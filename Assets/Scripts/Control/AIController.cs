@@ -89,7 +89,7 @@ namespace RPG.Control
         {
             Vector3 nextWayPoint = patrolPath.GetNextWayPoint();
             
-            mover.MoveTo(nextWayPoint);
+            mover.MoveTo(nextWayPoint, enemy.PatrolSpeed, 0);
 
             while(Vector3.Distance(transform.position, nextWayPoint) > toleranceStopDistance)
             {
@@ -116,7 +116,7 @@ namespace RPG.Control
         private void AttackPlayerBehaviour()
         {
             CancelPatrolBehaviour();
-            fighter.Attack(player);
+            fighter.Attack(player, enemy);
         }
 
         private void CancelPatrolBehaviour()

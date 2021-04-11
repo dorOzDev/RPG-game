@@ -14,6 +14,7 @@ namespace RPG.Combat
         private const string STOP_ATTACK = "stopAttack";
 
         private BaseCharacter target;
+        private BaseCharacter attacker;
         private Mover mover;
         private Animator animator;
         private bool shouldAttack = false;
@@ -40,7 +41,7 @@ namespace RPG.Combat
         {
             if (CanAttack())
             {
-                mover.MoveTo(target.transform.position, weaponRange);
+                mover.MoveTo(target.transform.position, attacker.RunningSpeed, weaponRange);
 
                 transform.LookAt(target.transform);
 
@@ -48,10 +49,11 @@ namespace RPG.Combat
             }
         }
 
-        public void Attack(BaseCharacter target)
+        public void Attack(BaseCharacter target, BaseCharacter attacker)
         {
             shouldAttack = true;
             this.target = target;
+            this.attacker = attacker;
         }
 
         private IEnumerator StartRestBetweenAttacksCountDown()

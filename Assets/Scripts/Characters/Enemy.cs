@@ -13,6 +13,10 @@ namespace RPG.Characters
         [SerializeField] private float suspiciousDuration = 2f;
         public float SuspiciousDuration => suspiciousDuration;
 
+        [SerializeField] private float patrolSpeed = 4f;
+        public float PatrolSpeed => patrolSpeed;
+
+
         protected override Collider GetCharacterCollider()
         {
             return GetComponent<CapsuleCollider>();
