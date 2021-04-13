@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -25,6 +26,7 @@ namespace RPG.SceneManagment
         [SerializeField] private Transform spawnPoint;
         [SerializeField] private DestinationIdentifier destination;
         [SerializeField] private DestinationIdentifier identifier;
+
 
         private GameObject player;
 
@@ -53,9 +55,38 @@ namespace RPG.SceneManagment
 
         private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
         {
-            print(destination);
+            
+
+        }
+
+        private void SpawnPlayerAtDestination()
+        {
             player = GameObject.FindGameObjectWithTag("Player");
-            player.transform.position = spawnPoint.position;
+            
+            Vector3 position = GetDestinationPosition();
+
+            player.transform.position = position;
+        }
+
+        private Vector3 GetDestinationPosition()
+        {
+            Portal portal = GetDestinationPortal();
+
+            if (portal == null) return spawnPoint.position;
+
+            return portal.spawnPoint.position;
+        }
+
+        private Portal GetDestinationPortal()
+        {
+            Portal[] portals = FindObjectsOfType<Portal>();
+            foreach(Portal portal in portals)
+            {
+                if (portal.identifier == destination)
+                    return portal;
+            }
+
+            return null;
         }
 
         private void OnDisable()
@@ -65,7 +96,10 @@ namespace RPG.SceneManagment
 
         private IEnumerator Transition()
         {
+            DontDestroyOnLoad(this);
             yield return SceneManager.LoadSceneAsync(scene);
+            SpawnPlayerAtDestination();
+            Destroy(this);
         }
 
         private Portal GetOtherPortal()
