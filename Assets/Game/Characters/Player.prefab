@@ -38,7 +38,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e5ff80a3e87bdc4194bacf0d45be196, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialHealthPoints: 100
+  initialHealthPoints: 48.21
   runningSpeed: 8
 --- !u!1001 &6054553083507035534
 PrefabInstance:
@@ -111,7 +111,7 @@ PrefabInstance:
     - target: {fileID: 3908760541150588428, guid: 6eba3b59eed4564439142eeb2ad28086,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 11.69
       objectReference: {fileID: 0}
     - target: {fileID: 3908760541150588428, guid: 6eba3b59eed4564439142eeb2ad28086,
         type: 3}
@@ -121,27 +121,27 @@ PrefabInstance:
     - target: {fileID: 3908760541150588428, guid: 6eba3b59eed4564439142eeb2ad28086,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 6.65
       objectReference: {fileID: 0}
     - target: {fileID: 3908760541150588428, guid: 6eba3b59eed4564439142eeb2ad28086,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 3908760541150588428, guid: 6eba3b59eed4564439142eeb2ad28086,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 0.99831307
       objectReference: {fileID: 0}
     - target: {fileID: 3908760541150588428, guid: 6eba3b59eed4564439142eeb2ad28086,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 3908760541150588428, guid: 6eba3b59eed4564439142eeb2ad28086,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: -0.058061413
       objectReference: {fileID: 0}
     - target: {fileID: 3908760541150588428, guid: 6eba3b59eed4564439142eeb2ad28086,
         type: 3}
@@ -156,12 +156,22 @@ PrefabInstance:
     - target: {fileID: 3908760541150588428, guid: 6eba3b59eed4564439142eeb2ad28086,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 186.657
       objectReference: {fileID: 0}
     - target: {fileID: 3908760541150588428, guid: 6eba3b59eed4564439142eeb2ad28086,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5780061783713834981, guid: 6eba3b59eed4564439142eeb2ad28086,
+        type: 3}
+      propertyPath: damage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5780061783713834981, guid: 6eba3b59eed4564439142eeb2ad28086,
+        type: 3}
+      propertyPath: timeBetweenAttacks
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6963629440753951651, guid: 6eba3b59eed4564439142eeb2ad28086,
         type: 3}

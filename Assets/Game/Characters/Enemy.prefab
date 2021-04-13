@@ -47,7 +47,7 @@ MonoBehaviour:
   patrolPathGenerator: {fileID: 11400000, guid: 51ba5ce825b22c542b68ec63352e3aea,
     type: 2}
   toleranceStopDistance: 0.5
-  dwelInPoint: 1
+  dwelInPoint: 2
 --- !u!114 &8199620661538934021
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -131,17 +131,17 @@ PrefabInstance:
     - target: {fileID: 3908760541150588428, guid: 6eba3b59eed4564439142eeb2ad28086,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -9.96
+      value: 24.571373
       objectReference: {fileID: 0}
     - target: {fileID: 3908760541150588428, guid: 6eba3b59eed4564439142eeb2ad28086,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.116558075
       objectReference: {fileID: 0}
     - target: {fileID: 3908760541150588428, guid: 6eba3b59eed4564439142eeb2ad28086,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -10.29
+      value: -9.641663
       objectReference: {fileID: 0}
     - target: {fileID: 3908760541150588428, guid: 6eba3b59eed4564439142eeb2ad28086,
         type: 3}
