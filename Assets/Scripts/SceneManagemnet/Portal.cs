@@ -1,4 +1,5 @@
 ﻿using RPG.Characters;
+using RPG.SceneManagemnet;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -22,42 +23,38 @@ namespace RPG.SceneManagment
 
 
         private string PLAYER_TAG = "Player";
-        [SerializeField] private int scene = -1;
+        [SerializeField] private int sceneIndex = -1;
         [SerializeField] private Transform spawnPoint;
         [SerializeField] private DestinationIdentifier destination;
         [SerializeField] private DestinationIdentifier identifier;
+        [SerializeField] private Fader fader;
 
 
         private GameObject player;
 
         private void Awake()
         {
-            
+
         }
 
         private void Start()
         {
-            
+
         }
         private void OnTriggerEnter(Collider other)
         {
+            if(sceneIndex < 0)
+            {
+                Debug.LogError("Scene index to load has not been set yet");
+                return;
+            }
+
             if(other.tag == PLAYER_TAG)
             {
-                StartCoroutine(Transition());
+                StartCoroutine(Transition());       
             }
         }
 
-        private void OnEnable()
-        {
-            SceneManager.sceneLoaded += OnSceneLoaded;
-        }
-
-
-        private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
-        {
-            
-
-        }
 
         private void SpawnPlayerAtDestination()
         {
@@ -89,22 +86,14 @@ namespace RPG.SceneManagment
             return null;
         }
 
-        private void OnDisable()
-        {
-            SceneManager.sceneLoaded -= OnSceneLoaded;
-        }
-
         private IEnumerator Transition()
         {
             DontDestroyOnLoad(this);
-            yield return SceneManager.LoadSceneAsync(scene);
+            yield return fader.FadeInEffect();
+            yield return SceneManager.LoadSceneAsync(sceneIndex);
             SpawnPlayerAtDestination();
+            yield return fader.FadeOutEffect();
             Destroy(this);
-        }
-
-        private Portal GetOtherPortal()
-        {
-            return null;
         }
     }
 

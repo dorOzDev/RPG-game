@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf94728b784fa04b951270e27e80cfe, type: 3}
+  m_Name: Fader Instance
+  m_EditorClassIdentifier: 
+  canvasPrefab: {fileID: 8869079739266084890, guid: 50e72eb4790773449b8bdf5e6d358317,
+    type: 3}
+  fadeOutPace: 0.5

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Empty patrol path generator", menuName="ScriptableObjects/SpawnEmptyPatrolPathGenerator")]
+[CreateAssetMenu(fileName = "Empty patrol path generator", menuName="ScriptableObjects/Spawn Empty Patrol Path Generator")]
 public class EmptyPatrolPathGenerator : ScriptableObject
 {
     [SerializeField] private PatrolPath prefab;
