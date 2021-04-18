@@ -1,4 +1,6 @@
-﻿using System;
+﻿using RPG.Saving;
+using System;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 
@@ -7,12 +9,12 @@ namespace RPG.Combat
     public class Health : ScriptableObject
     {
         private float m_healthPoints;
-        [SerializeField] public float HealthPoints => m_healthPoints;
+        public float HealthPoints => m_healthPoints;
 
 
         public static Health CreateHealth(float health)
         {
-            Health healthScript = ScriptableObject.CreateInstance<Health>();
+            Health healthScript = CreateInstance<Health>();
             healthScript.Init(health);
             return healthScript;
         }

@@ -28,7 +28,7 @@ namespace RPG.SceneManagment
         [SerializeField] private DestinationIdentifier destination;
         [SerializeField] private DestinationIdentifier identifier;
         [SerializeField] private Fader fader;
-
+        [SerializeField] private SavingWrapper savingWrapper;
 
         private GameObject player;
 
@@ -54,7 +54,6 @@ namespace RPG.SceneManagment
                 StartCoroutine(Transition());       
             }
         }
-
 
         private void SpawnPlayerAtDestination()
         {
@@ -90,7 +89,13 @@ namespace RPG.SceneManagment
         {
             DontDestroyOnLoad(this);
             yield return fader.FadeInEffect();
+
+            savingWrapper.Save();
+
             yield return SceneManager.LoadSceneAsync(sceneIndex);
+
+            savingWrapper.Load();
+
             SpawnPlayerAtDestination();
             yield return fader.FadeOutEffect();
             Destroy(this);

@@ -1,5 +1,6 @@
 ﻿using RPG.Combat;
 using RPG.Movement;
+using RPG.Saving;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using UnityEngine;
 
 namespace RPG.Core
 {
-    public abstract class BaseCharacter : MonoBehaviour
+    public abstract class BaseCharacter : MonoBehaviour, ISaveable
     {
         [SerializeField] private float initialHealthPoints = 100f;
         
@@ -18,18 +19,21 @@ namespace RPG.Core
         public float RunningSpeed => runningSpeed;
         protected Health healthSystem { get; private set; }
 
+        public float currentHealthPoints => healthSystem.HealthPoints;
+
         private Animator animator;
         private Collider characterCollider;
 
         public bool IsAlive { get; private set; } = true;
 
+
         private void Start()
-        {
-            animator = GetComponent<Animator>();
+        {    
         }
 
         private void Awake()
         {
+            animator = GetComponent<Animator>();
             healthSystem = Health.CreateHealth(initialHealthPoints);
             characterCollider = GetCharacterCollider();
         }
@@ -51,5 +55,17 @@ namespace RPG.Core
         }
 
         protected abstract Collider GetCharacterCollider();
+
+        public object CaptureState()
+        {
+            return currentHealthPoints;
+        }
+
+        public void RestoreState(object state)
+        {
+            float savedHealth = (float)state;
+            TakeDamage(currentHealthPoints - savedHealth);
+            print(currentHealthPoints);
+        }
     }
 }
