@@ -1,4 +1,5 @@
 ﻿using RPG.Characters;
+using RPG.Movement;
 using RPG.SceneManagemnet;
 using System;
 using System.Collections;
@@ -28,7 +29,6 @@ namespace RPG.SceneManagment
         [SerializeField] private DestinationIdentifier destination;
         [SerializeField] private DestinationIdentifier identifier;
         [SerializeField] private Fader fader;
-        [SerializeField] private SavingWrapper savingWrapper;
 
         private GameObject player;
 
@@ -58,10 +58,16 @@ namespace RPG.SceneManagment
         private void SpawnPlayerAtDestination()
         {
             player = GameObject.FindGameObjectWithTag("Player");
+
+            Mover mover = player.GetComponent<Mover>();
+
+            mover.DisableMover();
             
             Vector3 position = GetDestinationPosition();
 
             player.transform.position = position;
+
+            mover.EnableMover();
         }
 
         private Vector3 GetDestinationPosition()
@@ -88,17 +94,34 @@ namespace RPG.SceneManagment
         private IEnumerator Transition()
         {
             DontDestroyOnLoad(this);
-            yield return fader.FadeInEffect();
-
-            savingWrapper.Save();
-
-            yield return SceneManager.LoadSceneAsync(sceneIndex);
-
-            savingWrapper.Load();
-
-            SpawnPlayerAtDestination();
             yield return fader.FadeOutEffect();
+
+            SaveScene();
+            yield return SceneManager.LoadSceneAsync(sceneIndex);
+            
+            LoadScene();
+            SpawnPlayerAtDestination();
+            SaveScene();
+            yield return fader.FadeInEffect();
             Destroy(this);
+        }
+
+        private void SaveScene()
+        {
+            SavingWrapper savingWrapper = GetSavingWrapper();
+            savingWrapper.Save();
+        }
+
+        private void LoadScene()
+        {
+            SavingWrapper savingWrapper = GetSavingWrapper();
+            savingWrapper.Load();
+        }
+
+
+        private SavingWrapper GetSavingWrapper() 
+        {
+            return FindObjectOfType<SavingWrapper>();
         }
     }
 

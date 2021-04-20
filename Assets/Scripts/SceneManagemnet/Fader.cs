@@ -19,8 +19,14 @@ namespace RPG.SceneManagemnet
 
         }
 
+        public void FadeOutImmidiate()
+        {
+            CanvasGroup canvasGroup = GetCanvasGroup();
+            canvasGroup.alpha = 1f;
+        }
 
-        public IEnumerator FadeInEffect()
+
+        public IEnumerator FadeOutEffect()
         {
             CanvasGroup canvasGroup = GetCanvasGroup();
             canvasGroup.alpha = 0f;
@@ -38,7 +44,7 @@ namespace RPG.SceneManagemnet
             return canvas.GetComponent<CanvasGroup>();
         }
 
-        public IEnumerator FadeOutEffect()
+        public IEnumerator FadeInEffect()
         {
             CanvasGroup canvasGroup = GetCanvasGroup();
             canvasGroup.alpha = 1f;

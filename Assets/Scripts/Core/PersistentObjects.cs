@@ -19,8 +19,8 @@ namespace RPG.Core
 
         private void SpawnPersistentObjects()
         {
-            //GameObject persistentObjects = Instantiate(persistentObjectsPrefab);
-            //DontDestroyOnLoad(persistentObjects);
+            GameObject persistentObjects = Instantiate(persistentObjectsPrefab);
+            DontDestroyOnLoad(persistentObjects);
         }
     }
 }

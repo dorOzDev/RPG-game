@@ -13,14 +13,18 @@ namespace RPG.Saving
     [CreateAssetMenu(fileName="Saving system insatnce", menuName = "ScriptableObjects/Create saving system instance")]
     public class SavingSystem : ScriptableObject
     {
+        private const string LAST_SCENE_BUILD_INDEX = "lastSceneBuildIndex";
         public IEnumerator LoadLastScene(string saveFile)
         {
             Dictionary<string, object> state = LoadFile(saveFile);
             int buildIndex = SceneManager.GetActiveScene().buildIndex;
-            if (state.ContainsKey("lastSceneBuildIndex"))
+            if (state.ContainsKey(LAST_SCENE_BUILD_INDEX))
             {
-                buildIndex = (int)state["lastSceneBuildIndex"];
+                buildIndex = (int)state[LAST_SCENE_BUILD_INDEX];
+                
             }
+            
+            
             yield return SceneManager.LoadSceneAsync(buildIndex);
             RestoreState(state);
         }
@@ -74,7 +78,7 @@ namespace RPG.Saving
                 state[saveable.GetUniqueIdentifier()] = saveable.CaptureState();
             }
 
-            state["lastSceneBuildIndex"] = SceneManager.GetActiveScene().buildIndex;
+            state[LAST_SCENE_BUILD_INDEX] = SceneManager.GetActiveScene().buildIndex;
         }
 
         private void RestoreState(Dictionary<string, object> state)

@@ -30,7 +30,7 @@ namespace RPG.Movement
             meshAgent.enabled = false;
         }
 
-        private void EnableMover()
+        public void EnableMover()
         {
             meshAgent.enabled = true;
         }

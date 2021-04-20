@@ -11,43 +11,42 @@ namespace RPG.Core
 {
     public abstract class BaseCharacter : MonoBehaviour, ISaveable
     {
-        [SerializeField] private float initialHealthPoints = 100f;
+        [SerializeField] protected float healthPoints = 100f;
         
-        [SerializeField]
-        protected float runningSpeed = 4f;
+        [SerializeField] protected float runningSpeed = 4f;
 
         public float RunningSpeed => runningSpeed;
         protected Health healthSystem { get; private set; }
-
-        public float currentHealthPoints => healthSystem.HealthPoints;
-
         private Animator animator;
         private Collider characterCollider;
 
         public bool IsAlive { get; private set; } = true;
 
-
-        private void Start()
-        {    
-        }
-
         private void Awake()
         {
             animator = GetComponent<Animator>();
-            healthSystem = Health.CreateHealth(initialHealthPoints);
+            healthSystem = Health.CreateHealth(healthPoints);
             characterCollider = GetCharacterCollider();
         }
 
         public void TakeDamage(float damage)
         {
             healthSystem.TakeDamage(damage);
+
+            UpdateInspectorHealthPoints();
+
             if(healthSystem.HealthPoints == 0 && IsAlive)
             {
                 TriggerDeath();
             }
         }
 
-         protected virtual void TriggerDeath()
+        private void UpdateInspectorHealthPoints()
+        {
+            healthPoints = healthSystem.HealthPoints;
+        }
+
+        protected virtual void TriggerDeath()
         {
             animator.SetTrigger("die");
             characterCollider.enabled = false;
@@ -58,14 +57,13 @@ namespace RPG.Core
 
         public object CaptureState()
         {
-            return currentHealthPoints;
+            return healthPoints;
         }
 
         public void RestoreState(object state)
         {
             float savedHealth = (float)state;
-            TakeDamage(currentHealthPoints - savedHealth);
-            print(currentHealthPoints);
+            TakeDamage(healthPoints - savedHealth);
         }
     }
 }
