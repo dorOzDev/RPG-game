@@ -1,13 +1,9 @@
 ﻿using RPG.Combat;
-using RPG.Movement;
 using RPG.Saving;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace RPG.Core
+namespace RPG.Characters
 {
     public abstract class BaseCharacter : MonoBehaviour, ISaveable
     {

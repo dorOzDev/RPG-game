@@ -6,8 +6,7 @@ using System.Collections;
 using UnityEngine;
 
 namespace RPG.Combat
-{
-    
+{ 
     public class Fighter : MonoBehaviour
     {
         private const string ATTACK = "attack";
@@ -19,11 +18,10 @@ namespace RPG.Combat
         private Animator animator;
         private bool shouldAttack = false;
 
-        [SerializeField] private float damage = 3f;
+        [SerializeField] private float timeBetweenAttacks = 3f;  
+        [SerializeField] Transform handTransform;
+        [SerializeField] Weapon weapon = null;
 
-        [SerializeField] private float weaponRange = 1f;
-
-        [SerializeField] private float timeBetweenAttacks = 3f;
 
         private bool isInRest = false;
 
@@ -33,20 +31,34 @@ namespace RPG.Combat
             animator = GetComponent<Animator>();
         }
 
-        private bool CanAttack()
+        private void Start()
         {
-            return shouldAttack && target != null && target.IsAlive;
+            SpawnWeapon();
         }
+
         private void Update()
         {
             if (CanAttack())
             {
-                mover.MoveTo(target.transform.position, attacker.RunningSpeed, weaponRange);
+                mover.MoveTo(target.transform.position, attacker.RunningSpeed, weapon.WeaponRange);
 
                 transform.LookAt(target.transform);
 
                 StartCoroutine(TriggerAttackAnimation());
             }
+        }
+
+        private void SpawnWeapon()
+        {
+            if(weapon != null)
+            {
+                weapon.Spawn(handTransform, animator);
+            }
+        }
+
+        private bool CanAttack()
+        {
+            return shouldAttack && target != null && target.IsAlive;
         }
 
         public void Attack(BaseCharacter target, BaseCharacter attacker)
@@ -83,7 +95,7 @@ namespace RPG.Combat
 
         private bool IsInAttackRange()
         {
-            return Vector3.Distance(transform.position, target.transform.position) <= weaponRange;
+            return Vector3.Distance(transform.position, target.transform.position) <= weapon.WeaponRange;
         }
 
         private void TriggerAttack()
@@ -105,7 +117,7 @@ namespace RPG.Combat
         void Hit()
         {
             if (target == null) return;
-            target.TakeDamage(damage);
+            target.TakeDamage(weapon.Damage);
 
         }
     }

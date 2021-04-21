@@ -101,6 +101,12 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 3f6fc0cf5e5d31c458bc74ede87cb8ae, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 679ff741e12a7e740819ede24a7000b7, type: 3}
+--- !u!4 &6054553083506705418 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 461188, guid: 679ff741e12a7e740819ede24a7000b7,
+    type: 3}
+  m_PrefabInstance: {fileID: 6054553083507035534}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &9131144128036382568
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -178,6 +184,29 @@ PrefabInstance:
       propertyPath: timeBetweenAttacks
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5780061783713834981, guid: 6eba3b59eed4564439142eeb2ad28086,
+        type: 3}
+      propertyPath: handTransform
+      value: 
+      objectReference: {fileID: 6054553083506705418}
+    - target: {fileID: 5780061783713834981, guid: 6eba3b59eed4564439142eeb2ad28086,
+        type: 3}
+      propertyPath: weaponPrefab
+      value: 
+      objectReference: {fileID: 1118891855058739851, guid: 6113b7ffba6816c4caf639f7e1b6bc46,
+        type: 3}
+    - target: {fileID: 5780061783713834981, guid: 6eba3b59eed4564439142eeb2ad28086,
+        type: 3}
+      propertyPath: weaponOverrideController
+      value: 
+      objectReference: {fileID: 22100000, guid: 57f39210f0d747741b882fdacd0f04b5,
+        type: 2}
+    - target: {fileID: 5780061783713834981, guid: 6eba3b59eed4564439142eeb2ad28086,
+        type: 3}
+      propertyPath: weapon
+      value: 
+      objectReference: {fileID: 11400000, guid: b7b50abeec2510443952a75796a0aacf,
+        type: 2}
     - target: {fileID: 6963629440753951651, guid: 6eba3b59eed4564439142eeb2ad28086,
         type: 3}
       propertyPath: m_Name
