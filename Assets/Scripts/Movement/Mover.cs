@@ -47,6 +47,8 @@ namespace RPG.Movement
 
         public void MoveTo(Vector3 dest, float speed ,float stoppingDistance)
         {
+            if (!meshAgent.enabled) return;
+
             meshAgent.speed = speed;
             meshAgent.stoppingDistance = stoppingDistance;
             meshAgent.destination = dest;

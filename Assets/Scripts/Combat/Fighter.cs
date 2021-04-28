@@ -19,8 +19,10 @@ namespace RPG.Combat
         private bool shouldAttack = false;
 
         [SerializeField] private float timeBetweenAttacks = 3f;  
-        [SerializeField] Transform handTransform;
-        [SerializeField] Weapon weapon = null;
+        [SerializeField] Transform rightHandTransform;
+        [SerializeField] Transform leftHandTransform;
+        [SerializeField] Weapon defaultWeapon = null;
+        private Weapon currWeapon = null;
 
 
         private bool isInRest = false;
@@ -33,14 +35,14 @@ namespace RPG.Combat
 
         private void Start()
         {
-            SpawnWeapon();
+            EquipWeapon(defaultWeapon);
         }
 
         private void Update()
         {
             if (CanAttack())
             {
-                mover.MoveTo(target.transform.position, attacker.RunningSpeed, weapon.WeaponRange);
+                mover.MoveTo(target.transform.position, attacker.RunningSpeed, currWeapon.WeaponRange);
 
                 transform.LookAt(target.transform);
 
@@ -48,11 +50,12 @@ namespace RPG.Combat
             }
         }
 
-        private void SpawnWeapon()
+        public void EquipWeapon(Weapon weapon)
         {
-            if(weapon != null)
+            currWeapon = weapon;
+            if (weapon != null)
             {
-                weapon.Spawn(handTransform, animator);
+                weapon.Spawn(rightHandTransform, leftHandTransform, animator);
             }
         }
 
@@ -95,7 +98,7 @@ namespace RPG.Combat
 
         private bool IsInAttackRange()
         {
-            return Vector3.Distance(transform.position, target.transform.position) <= weapon.WeaponRange;
+            return Vector3.Distance(transform.position, target.transform.position) <= currWeapon.WeaponRange;
         }
 
         private void TriggerAttack()
@@ -113,12 +116,28 @@ namespace RPG.Combat
             animator.ResetTrigger(ATTACK);
             animator.SetTrigger(STOP_ATTACK);
         }
-        // Animation event(is called once the animator SetsTrigget of "attack"
+        // Animation event(is called once the animator SetsTrigget of "attack")
         void Hit()
         {
             if (target == null) return;
-            target.TakeDamage(weapon.Damage);
 
+            if (currWeapon is ProjectileWeapon) ShootProjectile();
+
+            target.TakeDamage(currWeapon.Damage);
+        }
+
+        void Shoot()
+        {
+            Hit();
+        }
+
+        private void ShootProjectile()
+        {
+            ProjectileWeapon projectileWeapon = currWeapon as ProjectileWeapon;
+
+            Projectile projectile = projectileWeapon.SpawnProjectile(rightHandTransform);
+
+            projectile.ShootProjectile(target.transform);
         }
     }
 }
