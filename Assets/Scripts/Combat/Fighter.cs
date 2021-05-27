@@ -24,6 +24,7 @@ namespace RPG.Combat
         [SerializeField] Weapon defaultWeapon = null;
         private Weapon currWeapon = null;
 
+        private GameObject equippedWeapon = null;
 
         private bool isInRest = false;
 
@@ -52,11 +53,17 @@ namespace RPG.Combat
 
         public void EquipWeapon(Weapon weapon)
         {
+            DestroyOldWeapon();
             currWeapon = weapon;
             if (weapon != null)
             {
-                weapon.Spawn(rightHandTransform, leftHandTransform, animator);
+                equippedWeapon = weapon.Spawn(rightHandTransform, leftHandTransform, animator);
             }
+        }
+
+        private void DestroyOldWeapon()
+        {
+            Destroy(equippedWeapon);
         }
 
         private bool CanAttack()

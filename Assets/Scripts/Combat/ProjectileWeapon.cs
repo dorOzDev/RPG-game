@@ -15,7 +15,9 @@ namespace RPG.Combat
         public Projectile SpawnProjectile(Transform rightHand)
         {
             GameObject projectileGameObject = Instantiate(projectilePrefab, rightHand);
+
             projectileGameObject.transform.parent = null;
+
             return projectileGameObject.GetComponent<Projectile>();
         }
     }

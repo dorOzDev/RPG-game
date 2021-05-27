@@ -10,21 +10,9 @@ namespace RPG.Combat
         // Start is called before the first frame update
         [SerializeField] float distanceThreshHold = 1f;
         [SerializeField] float projectileSpeed = 1f;
-        [SerializeField] Transform test;
-        void Start()
-        {
-            //ShootProjectile(test);
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
 
         public void ShootProjectile(Transform target)
         {
-            print(target.position);
             transform.LookAt(target);
             StartCoroutine(ShootProjectileOverSpeed(target));
         }
@@ -48,6 +36,11 @@ namespace RPG.Combat
                 yield return new WaitForEndOfFrame();
             }
             Destroy(gameObject);
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            //print("Collision with: " + other.gameObject.name);
         }
     }
 }

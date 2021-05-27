@@ -61,5 +61,12 @@ namespace RPG.Characters
             float savedHealth = (float)state;
             TakeDamage(healthPoints - savedHealth);
         }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            print(other.GetType());
+            //print(other.gameObject.name);
+            //print("On trigger/n" + "Other: " + other.gameObject.name + ", Self: " + this.gameObject.name);
+        }
     }
 }

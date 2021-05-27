@@ -121,9 +121,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41870a97871d7ab4582069becd00517e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 3
-  weaponRange: 2
   timeBetweenAttacks: 3
+  handTransform: {fileID: 0}
+  defaultWeapon: {fileID: 11400000, guid: f4446ef00203b6741af0a4fdd9fab8c9, type: 2}
 --- !u!95 &2028880623
 Animator:
   serializedVersion: 3

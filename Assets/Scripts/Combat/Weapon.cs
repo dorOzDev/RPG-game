@@ -13,19 +13,24 @@ namespace RPG.Combat
         [SerializeField] private float weaponRange = 1f;
         [SerializeField] private WeaponHand hand;
 
+        
+
         public float Damage => damage;
         public float WeaponRange => weaponRange;
 
-        public virtual void Spawn(Transform rightHand, Transform leftHand, Animator animator)
+        public virtual GameObject Spawn(Transform rightHand, Transform leftHand, Animator animator)
         {
+            GameObject equippedWeapon = null;
             if (weaponPrefab != null)
             {
-                Instantiate(weaponPrefab, GetCorrectHandSpawn(rightHand,leftHand));
+                equippedWeapon = Instantiate(weaponPrefab, GetCorrectHandSpawn(rightHand,leftHand));
             }
             if (weaponOverrideController != null)
             {
                 animator.runtimeAnimatorController = weaponOverrideController;
             }
+
+            return equippedWeapon;
         }
 
         protected Transform GetCorrectHandSpawn(Transform rightHand, Transform leftHand)
