@@ -14,6 +14,19 @@ CapsuleCollider:
   m_Height: 0.26
   m_Direction: 0
   m_Center: {x: -0.09, y: 0, z: 0}
+--- !u!114 &391541489713085400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6054553083506856460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3486d0ac32bf954eae385606eafbe34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponData: {fileID: 11400000, guid: f4446ef00203b6741af0a4fdd9fab8c9, type: 2}
 --- !u!136 &7239828739143806195
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -28,6 +41,19 @@ CapsuleCollider:
   m_Height: 0.26
   m_Direction: 0
   m_Center: {x: 0.12, y: 0, z: 0}
+--- !u!114 &7642750075419215190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6054553083506852060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3486d0ac32bf954eae385606eafbe34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponData: {fileID: 11400000, guid: f4446ef00203b6741af0a4fdd9fab8c9, type: 2}
 --- !u!54 &4570899801294327281
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -27,6 +27,11 @@ namespace RPG.Characters
             Gizmos.color = Color.blue;
             Gizmos.DrawWireSphere(gameObject.transform.position, chaseDistance);
         }
+
+        protected override void SetCharacterType()
+        {
+            this.charType = CharacterType.Enemy;
+        }
     }
 
 }

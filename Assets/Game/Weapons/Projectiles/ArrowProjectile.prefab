@@ -192,8 +192,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c16398e7857d4ea4aa68032e677c120a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponData: {fileID: 0}
   distanceThreshHold: 1
   projectileSpeed: 10
+  shootDistance: 10
 --- !u!136 &1464888199841953637
 CapsuleCollider:
   m_ObjectHideFlags: 0

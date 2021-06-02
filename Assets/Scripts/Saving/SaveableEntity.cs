@@ -42,7 +42,8 @@ namespace RPG.Saving
         }
 
 #if UNITY_EDITOR
-        private void Update() {
+        private void Update() 
+        {
             if (Application.IsPlaying(gameObject)) return;
             if (string.IsNullOrEmpty(gameObject.scene.path)) return;
 

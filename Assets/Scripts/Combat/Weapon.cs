@@ -1,51 +1,28 @@
-﻿using System;
+﻿using RPG.Characters;
+using RPG.Combat;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using UnityEngine;
 
-
-namespace RPG.Combat
+namespace Assets.Scripts.Combat
 {
-    [CreateAssetMenu(fileName = "Weapon instance", menuName = "ScriptableObjects/Create weapon instance")]
-    public class Weapon : ScriptableObject
+    public class Weapon : MonoBehaviour
     {
-        [SerializeField] private AnimatorOverrideController weaponOverrideController = null;
-        [SerializeField] private GameObject weaponPrefab = null;
-        [SerializeField] private float damage = 3f;
-        [SerializeField] private float weaponRange = 1f;
-        [SerializeField] private WeaponHand hand;
-
-        
-
-        public float Damage => damage;
-        public float WeaponRange => weaponRange;
-
-        public virtual GameObject Spawn(Transform rightHand, Transform leftHand, Animator animator)
+        [SerializeField] protected WeaponData weaponData;
+        protected virtual void OnTriggerEnter(Collider other)
         {
-            GameObject equippedWeapon = null;
-            if (weaponPrefab != null)
+            BaseCharacter hitChar = other.GetComponentInParent<BaseCharacter>();
+            BaseCharacter self = GetComponentInParent<BaseCharacter>();
+            if(hitChar != null && self != null)
             {
-                equippedWeapon = Instantiate(weaponPrefab, GetCorrectHandSpawn(rightHand,leftHand));
+                if(hitChar.CharType != self.CharType)
+                {
+                    hitChar.TakeDamage(weaponData.Damage);
+                }
             }
-            if (weaponOverrideController != null)
-            {
-                animator.runtimeAnimatorController = weaponOverrideController;
-            }
-
-            return equippedWeapon;
         }
-
-        protected Transform GetCorrectHandSpawn(Transform rightHand, Transform leftHand)
-        {
-            Transform handTransform = rightHand;
-
-            if (hand == WeaponHand.LEFT) handTransform = leftHand;
-
-            return handTransform;
-        }
-    }
-
-    enum WeaponHand
-    {
-        RIGHT,
-        LEFT
     }
 }

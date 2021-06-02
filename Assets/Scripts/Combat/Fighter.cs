@@ -3,7 +3,9 @@ using RPG.Core;
 using RPG.Movement;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using static RPG.Characters.BaseCharacter;
 
 namespace RPG.Combat
 { 
@@ -21,10 +23,10 @@ namespace RPG.Combat
         [SerializeField] private float timeBetweenAttacks = 3f;  
         [SerializeField] Transform rightHandTransform;
         [SerializeField] Transform leftHandTransform;
-        [SerializeField] Weapon defaultWeapon = null;
-        private Weapon currWeapon = null;
+        [SerializeField] WeaponData defaultWeapon = null;
+        private WeaponData currWeapon = null;
 
-        private GameObject equippedWeapon = null;
+        private IList<GameObject> equippedWeapons = null;
 
         private bool isInRest = false;
 
@@ -37,6 +39,7 @@ namespace RPG.Combat
         private void Start()
         {
             EquipWeapon(defaultWeapon);
+            SetWeaponActivity(false);
         }
 
         private void Update()
@@ -51,19 +54,23 @@ namespace RPG.Combat
             }
         }
 
-        public void EquipWeapon(Weapon weapon)
+        public void EquipWeapon(WeaponData weapon)
         {
             DestroyOldWeapon();
             currWeapon = weapon;
             if (weapon != null)
             {
-                equippedWeapon = weapon.Spawn(rightHandTransform, leftHandTransform, animator);
+                equippedWeapons = weapon.Spawn(rightHandTransform, leftHandTransform, animator);
             }
         }
 
         private void DestroyOldWeapon()
         {
-            Destroy(equippedWeapon);
+            if (equippedWeapons == null || equippedWeapons.Count == 0 || currWeapon == defaultWeapon) return;
+            foreach(GameObject weapon in equippedWeapons)
+            {
+                Destroy(weapon);
+            }
         }
 
         private bool CanAttack()
@@ -73,6 +80,7 @@ namespace RPG.Combat
 
         public void Attack(BaseCharacter target, BaseCharacter attacker)
         {
+            SetWeaponActivity(true);
             shouldAttack = true;
             this.target = target;
             this.attacker = attacker;
@@ -117,8 +125,19 @@ namespace RPG.Combat
             StartCoroutine(StartRestBetweenAttacksCountDown());
         }
 
+        private void SetWeaponActivity(bool actitvity)
+        {
+            if (equippedWeapons == null) return;
+
+            foreach(GameObject equippedWeapon in equippedWeapons)
+            {
+                equippedWeapon.GetComponentInParent<Collider>().enabled = actitvity;
+            }
+        }
+
         public void CancelAttack()
         {
+            SetWeaponActivity(false);
             shouldAttack = false;
             animator.ResetTrigger(ATTACK);
             animator.SetTrigger(STOP_ATTACK);
@@ -128,9 +147,7 @@ namespace RPG.Combat
         {
             if (target == null) return;
 
-            if (currWeapon is ProjectileWeapon) ShootProjectile();
-
-            target.TakeDamage(currWeapon.Damage);
+            if (currWeapon is ProjectileWeaponData) ShootProjectile();
         }
 
         void Shoot()
@@ -140,11 +157,11 @@ namespace RPG.Combat
 
         private void ShootProjectile()
         {
-            ProjectileWeapon projectileWeapon = currWeapon as ProjectileWeapon;
+            ProjectileWeaponData projectileWeapon = currWeapon as ProjectileWeaponData;
 
             Projectile projectile = projectileWeapon.SpawnProjectile(rightHandTransform);
 
-            projectile.ShootProjectile(target.transform);
+            projectile.Attack(target);
         }
     }
 }

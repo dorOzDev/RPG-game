@@ -16,13 +16,21 @@ namespace RPG.Characters
         private Animator animator;
         private Collider characterCollider;
 
+        protected CharacterType charType;
+
+        public CharacterType CharType => charType;
+
         public bool IsAlive { get; private set; } = true;
+
+        protected abstract Collider GetCharacterCollider();
+        protected abstract void SetCharacterType();
 
         private void Awake()
         {
             animator = GetComponent<Animator>();
             healthSystem = Health.CreateHealth(healthPoints);
             characterCollider = GetCharacterCollider();
+            SetCharacterType();
         }
 
         public void TakeDamage(float damage)
@@ -49,8 +57,6 @@ namespace RPG.Characters
             IsAlive = false;
         }
 
-        protected abstract Collider GetCharacterCollider();
-
         public object CaptureState()
         {
             return healthPoints;
@@ -64,9 +70,18 @@ namespace RPG.Characters
 
         private void OnTriggerEnter(Collider other)
         {
-            print(other.GetType());
-            //print(other.gameObject.name);
-            //print("On trigger/n" + "Other: " + other.gameObject.name + ", Self: " + this.gameObject.name);
+            Projectile projectile = other.GetComponentInParent<Projectile>();
+            if(projectile != null)
+            {
+               
+            }
+        }
+
+        public enum CharacterType
+        {
+            NONE,
+            Player,
+            Enemy
         }
     }
 }

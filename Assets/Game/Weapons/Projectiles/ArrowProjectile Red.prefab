@@ -7,6 +7,12 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 424936620562082704, guid: e93e0e4505df05148a75b94fdb833563,
+        type: 3}
+      propertyPath: weaponData
+      value: 
+      objectReference: {fileID: 11400000, guid: 0683d86764d372f468d96e36fca91d1d,
+        type: 2}
     - target: {fileID: 6823641398563264457, guid: e93e0e4505df05148a75b94fdb833563,
         type: 3}
       propertyPath: m_LocalPosition.x

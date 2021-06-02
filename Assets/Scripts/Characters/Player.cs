@@ -10,6 +10,11 @@ namespace RPG.Characters
         {
             return GetComponent<CapsuleCollider>();
         }
+
+        protected override void SetCharacterType()
+        {
+            this.charType = CharacterType.Player;
+        }
     }
 }
 

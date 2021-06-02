@@ -8,7 +8,7 @@ using UnityEngine;
 namespace RPG.Combat
 {
     [CreateAssetMenu(fileName = "Projectile Weapon instance", menuName = "ScriptableObjects/Create projectile weapon instance")]
-    class ProjectileWeapon : Weapon
+    class ProjectileWeaponData : WeaponData
     {
         [SerializeField] private GameObject projectilePrefab;
 
