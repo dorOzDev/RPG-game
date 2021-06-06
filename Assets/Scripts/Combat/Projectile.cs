@@ -10,10 +10,10 @@ namespace RPG.Combat
 {
     public class Projectile : Weapon
     {
-        // Start is called before the first frame update
         [SerializeField] float distanceThreshHold = 1f;
         [SerializeField] float projectileSpeed = 1f;
         [SerializeField] float shootDistance = 10f;
+        [SerializeField] GameObject impactEffectPrefab;
 
         private BaseCharacter target;
 
@@ -51,13 +51,20 @@ namespace RPG.Combat
             BaseCharacter hitCharacter = other.GetComponentInParent<BaseCharacter>();
             if(hitCharacter != null)
             {
-                
                 if(hitCharacter.CharType == target.CharType)
                 {
+                    PlayImpactEffect(other.transform);
                     target.TakeDamage(weaponData.Damage);
                     Destroy(gameObject);
                 }
             }
+        }
+
+        private void PlayImpactEffect(Transform hitTransform)
+        {
+            if (impactEffectPrefab == null) return;
+
+            Instantiate(impactEffectPrefab, GetAimLocation(hitTransform), transform.rotation);
         }
     }
 }

@@ -158,7 +158,7 @@ GameObject:
   - component: {fileID: 424936620562082704}
   - component: {fileID: 1464888199841953637}
   m_Layer: 0
-  m_Name: ArrowProjectile
+  m_Name: Root Arrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -196,6 +196,8 @@ MonoBehaviour:
   distanceThreshHold: 1
   projectileSpeed: 10
   shootDistance: 10
+  impactEffectPrefab: {fileID: 4911275908470940644, guid: 95091331700609347be94500f1e97980,
+    type: 3}
 --- !u!136 &1464888199841953637
 CapsuleCollider:
   m_ObjectHideFlags: 0
