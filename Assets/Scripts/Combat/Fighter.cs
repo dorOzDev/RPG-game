@@ -1,15 +1,14 @@
 ﻿using RPG.Characters;
-using RPG.Core;
 using RPG.Movement;
-using System;
+using RPG.Saving;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static RPG.Characters.BaseCharacter;
+
 
 namespace RPG.Combat
 { 
-    public class Fighter : MonoBehaviour
+    public class Fighter : MonoBehaviour, ISaveable
     {
         private const string ATTACK = "attack";
         private const string STOP_ATTACK = "stopAttack";
@@ -34,10 +33,6 @@ namespace RPG.Combat
         {
             mover = GetComponent<Mover>();
             animator = GetComponent<Animator>();
-        }
-
-        private void Start()
-        {
             EquipWeapon(defaultWeapon);
             SetWeaponActivity(false);
         }
@@ -66,7 +61,7 @@ namespace RPG.Combat
 
         private void DestroyOldWeapon()
         {
-            if (equippedWeapons == null || equippedWeapons.Count == 0 || currWeapon == defaultWeapon) return;
+            if (equippedWeapons == null) return;
             foreach(GameObject weapon in equippedWeapons)
             {
                 Destroy(weapon);
@@ -129,9 +124,13 @@ namespace RPG.Combat
         {
             if (equippedWeapons == null) return;
 
-            foreach(GameObject equippedWeapon in equippedWeapons)
+            foreach (GameObject equippedWeapon in equippedWeapons)
             {
-                equippedWeapon.GetComponentInParent<Collider>().enabled = actitvity;
+                Collider collider = equippedWeapon.GetComponent<Collider>();
+                if(collider != null)
+                {
+                    equippedWeapon.GetComponent<Collider>().enabled = actitvity;
+                }
             }
         }
 
@@ -162,6 +161,18 @@ namespace RPG.Combat
             Projectile projectile = projectileWeapon.SpawnProjectile(rightHandTransform);
 
             projectile.Attack(target);
+        }
+
+        public object CaptureState()
+        {
+            return currWeapon.name;
+        }
+
+        public void RestoreState(object state)
+        {
+            string weaponName = (string)state;
+            WeaponData weapon = Resources.Load<WeaponData>(weaponName);
+            EquipWeapon(weapon);
         }
     }
 }

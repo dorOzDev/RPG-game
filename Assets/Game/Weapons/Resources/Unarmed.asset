@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: Unarmed
   m_EditorClassIdentifier: 
   weaponOverrideController: {fileID: 0}
-  weaponPrefab: {fileID: 0}
+  leftHandWeaponPrefab: {fileID: 6859380987014176263, guid: 228a4438217ef3645a69dc4da876ec95,
+    type: 3}
+  rightHandWeaponPrefab: {fileID: 6603444024701729841, guid: 6df04be89c3b200478f9523c6c7920bf,
+    type: 3}
   damage: 1.2
   weaponRange: 1
-  hand: 0

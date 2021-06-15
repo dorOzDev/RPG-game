@@ -13,7 +13,7 @@ namespace RPG.SceneManagemnet
         [Range(0, 1f)]
         [SerializeField] float fadeOutPace = 0.5f;
 
-        
+
         private void Awake()
         {
 

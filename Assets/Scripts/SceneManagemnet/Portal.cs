@@ -57,7 +57,7 @@ namespace RPG.SceneManagment
 
         private void SpawnPlayerAtDestination()
         {
-            player = GameObject.FindGameObjectWithTag("Player");
+            player = GameObject.FindGameObjectWithTag(PLAYER_TAG);
 
             Mover mover = player.GetComponent<Mover>();
 
