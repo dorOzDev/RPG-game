@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 using UnityEngine;
 
 
-namespace RPG.Combat
+namespace RPG.Resources
 { 
     public class Health : ScriptableObject
     {

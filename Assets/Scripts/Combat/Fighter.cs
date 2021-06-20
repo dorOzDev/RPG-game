@@ -171,7 +171,7 @@ namespace RPG.Combat
         public void RestoreState(object state)
         {
             string weaponName = (string)state;
-            WeaponData weapon = Resources.Load<WeaponData>(weaponName);
+            WeaponData weapon = UnityEngine.Resources.Load<WeaponData>(weaponName);
             EquipWeapon(weapon);
         }
     }

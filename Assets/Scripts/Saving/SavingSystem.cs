@@ -16,6 +16,7 @@ namespace RPG.Saving
         private const string LAST_SCENE_BUILD_INDEX = "lastSceneBuildIndex";
         public IEnumerator LoadLastScene(string saveFile)
         {
+            
             Dictionary<string, object> state = LoadFile(saveFile);
             int buildIndex = SceneManager.GetActiveScene().buildIndex;
             if (state.ContainsKey(LAST_SCENE_BUILD_INDEX))
@@ -63,6 +64,7 @@ namespace RPG.Saving
         private void SaveFile(string saveFile, object state)
         {
             string path = GetPathFromSaveFile(saveFile);
+            
             Debug.Log("Saving to " + path);
             using (FileStream stream = File.Open(path, FileMode.Create))
             {

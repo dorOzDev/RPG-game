@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace RPG.Stats
 {
-    interface IProvideStats
+    public enum Stat
     {
-        float ProvideInitialHealth();
-        float ProvideExperienceReward();
+        Health,
+        ExperienceReward
     }
 }

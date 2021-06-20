@@ -1,6 +1,8 @@
-﻿using RPG.Combat;
+﻿using RPG.Resources;
 using RPG.Saving;
 using RPG.Stats;
+using System;
+using System.Data;
 using UnityEngine;
 
 
@@ -31,27 +33,41 @@ namespace RPG.Characters
         protected abstract Collider GetCharacterCollider();
         protected abstract void SetCharacterType();
 
+        /// <summary>
+        /// For debug purpose I provide an event for when the health point of any character is effected
+        /// </summary>
+        public delegate void OnDamageTakenDelegate(BaseCharacter baseCharacter, float percentage);
+        public static event OnDamageTakenDelegate OnDamageTakenEvent;
+
+        public delegate void OnRewardExperienceDelegate(BaseCharacter character, float experience);
+        public static event OnRewardExperienceDelegate OnRewardExperienceEvent;
+
         private void Awake()
         {
             animator = GetComponent<Animator>();
             stats = GetComponent<IProvideStats>();
-            healthPoints = stats.ProvideHealth();
-            healthSystem = Health.CreateHealth(stats.ProvideHealth());
+            healthPoints = stats.ProvideInitialHealth();
+            healthSystem = Health.CreateHealth(stats.ProvideInitialHealth());
             characterCollider = GetCharacterCollider();    
             SetCharacterType();
         }
 
+
         public void TakeDamage(float damage)
         {
-            print(healthSystem.HealthPoints);
             healthSystem.TakeDamage(damage);
-
+            OnDamageTakenEvent?.Invoke(this, GetPercentageHealth());
             UpdateInspectorHealthPoints();
 
             if(healthSystem.HealthPoints == 0 && IsAlive)
             {
                 TriggerDeath();
             }
+        }
+
+        private float GetPercentageHealth()
+        {
+            return 100 * (healthSystem.HealthPoints / stats.ProvideInitialHealth());
         }
 
         private void UpdateInspectorHealthPoints()
@@ -61,6 +77,7 @@ namespace RPG.Characters
 
         protected virtual void TriggerDeath()
         {
+            OnRewardExperienceEvent?.Invoke(this, stats.ProvideExperienceReward());
             animator.SetTrigger("die");
             characterCollider.enabled = false;
             IsAlive = false;
