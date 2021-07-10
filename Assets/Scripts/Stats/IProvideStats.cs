@@ -8,7 +8,6 @@ namespace RPG.Stats
 {
     interface IProvideStats
     {
-        float ProvideInitialHealth();
-        float ProvideExperienceReward();
+        float GetStat(Stat stat);
     }
 }

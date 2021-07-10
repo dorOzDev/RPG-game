@@ -1,7 +1,8 @@
-﻿using UnityEngine;
+﻿using RPG.Resources;
+using UnityEngine;
 using UnityEngine.UI;
 
-namespace RPG.Resources
+namespace RPG.UI
 {
     class ExperienceDisplay : MonoBehaviour
     {

@@ -63,20 +63,6 @@ namespace RPG.Stats
             return progStat.GetValueByLevel(level);
         }
 
-        private ProgressionStat[] GetProgressionStat(CharacterClass characterClass)
-        {
-            foreach(ProgressionCharacterClass progressionCharacter in characterClasses)
-            {
-                if(progressionCharacter.CharacterClass == characterClass)
-                {
-                    return progressionCharacter.ProgressionStats;
-                }
-            }
-            // If none found return null;
-            return null;
-        }
-
-
         [Serializable]
         class ProgressionCharacterClass
         {

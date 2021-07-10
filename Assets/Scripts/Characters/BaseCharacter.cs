@@ -46,8 +46,8 @@ namespace RPG.Characters
         {
             animator = GetComponent<Animator>();
             stats = GetComponent<IProvideStats>();
-            healthPoints = stats.ProvideInitialHealth();
-            healthSystem = Health.CreateHealth(stats.ProvideInitialHealth());
+            healthPoints = stats.GetStat(Stat.Health);
+            healthSystem = Health.CreateHealth(healthPoints);
             characterCollider = GetCharacterCollider();    
             SetCharacterType();
         }
@@ -67,7 +67,7 @@ namespace RPG.Characters
 
         private float GetPercentageHealth()
         {
-            return 100 * (healthSystem.HealthPoints / stats.ProvideInitialHealth());
+            return 100 * (healthSystem.HealthPoints / stats.GetStat(Stat.Health));
         }
 
         private void UpdateInspectorHealthPoints()
@@ -77,7 +77,7 @@ namespace RPG.Characters
 
         protected virtual void TriggerDeath()
         {
-            OnRewardExperienceEvent?.Invoke(this, stats.ProvideExperienceReward());
+            OnRewardExperienceEvent?.Invoke(this, stats.GetStat(Stat.ExperienceReward));
             animator.SetTrigger("die");
             characterCollider.enabled = false;
             IsAlive = false;

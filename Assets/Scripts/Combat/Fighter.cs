@@ -75,7 +75,6 @@ namespace RPG.Combat
 
         public void Attack(BaseCharacter target, BaseCharacter attacker)
         {
-            SetWeaponActivity(true);
             shouldAttack = true;
             this.target = target;
             this.attacker = attacker;
@@ -120,7 +119,7 @@ namespace RPG.Combat
             StartCoroutine(StartRestBetweenAttacksCountDown());
         }
 
-        private void SetWeaponActivity(bool actitvity)
+        public void SetWeaponActivity(bool actitvity)
         {
             if (equippedWeapons == null) return;
 
@@ -136,12 +135,11 @@ namespace RPG.Combat
 
         public void CancelAttack()
         {
-            SetWeaponActivity(false);
             shouldAttack = false;
             animator.ResetTrigger(ATTACK);
             animator.SetTrigger(STOP_ATTACK);
         }
-        // Animation event(is called once the animator SetsTrigget of "attack")
+        // Animation event(is called once the animator SetsTrigger of "attack")
         void Hit()
         {
             if (target == null) return;
