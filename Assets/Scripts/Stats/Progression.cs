@@ -36,6 +36,26 @@ namespace RPG.Stats
                 loopUpTable.Add(progressionCharacter.CharacterClass, dict);
             }
         }
+        /// <summary>
+        /// Returns the maximum supported Level for a given start of a class
+        /// </summary>
+        /// <param name="stat">Simple</param>
+        /// <param name="characterClass"></param>
+        /// <returns></returns>
+        public int GetMaxLevelSupported(Stat stat, CharacterClass characterClass)
+        {
+            BuildLookpUpTable();
+            Dictionary<Stat, ProgressionStat> characterDict = loopUpTable[characterClass];
+            if (characterDict == null)
+            {
+                Debug.LogError("Progression stats was not implemented for the class: " + characterClass);
+                return 1;
+            }
+
+            ProgressionStat progressionStat = characterDict[stat];
+
+            return progressionStat.GetMaxSupportedLevel();
+        }
 
         public float GetStat(Stat stat, CharacterClass characterClass, int level)
         {
@@ -62,7 +82,7 @@ namespace RPG.Stats
             }
             return progStat.GetValueByLevel(level);
         }
-
+        
         [Serializable]
         class ProgressionCharacterClass
         {
@@ -86,12 +106,22 @@ namespace RPG.Stats
             {
                 if(levels.Length == 0)
                 {
-                    Debug.LogError("Stat:"+ stat + "Doesn't imeplement any values");
+                    Debug.LogError("Stat:"+ stat + "Doesn't implement any values");
                     return defaultErrorValue;
                 }
 
                 int maxLevel = Math.Max(Math.Min(level - 1, levels.Length - 1), 0);
                 return levels[maxLevel];
+            }
+
+            public int GetMaxSupportedLevel()
+            {
+                if (levels.Length == 0)
+                {
+                    Debug.LogError("Stat:" + stat + "Doesn't implement any values");
+                    return 1;
+                }
+                return levels.Length;
             }
         }
     }

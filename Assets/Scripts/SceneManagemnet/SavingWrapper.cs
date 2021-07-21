@@ -14,8 +14,12 @@ namespace RPG.SceneManagemnet
 
         private const string defaultSaveFile = "save";
 
+        private void Awake()
+        {
+            StartCoroutine(LoadLastScene());
+        }
 
-        IEnumerator Start()
+        IEnumerator LoadLastScene()
         {
             fader.FadeOutImmidiate();
             yield return savingSystemInstace.LoadLastScene(defaultSaveFile);
@@ -34,6 +38,11 @@ namespace RPG.SceneManagemnet
             {
                 Save();
             }
+            
+            if(Input.GetKeyDown(KeyCode.Delete))
+            {
+                Delete();
+            }
         }
 
         public void Save()
@@ -44,6 +53,11 @@ namespace RPG.SceneManagemnet
         public void Load()
         {
             savingSystemInstace.Load(defaultSaveFile);
+        }
+
+        public void Delete()
+        {
+            savingSystemInstace.Delete(defaultSaveFile);
         }
     }
 }

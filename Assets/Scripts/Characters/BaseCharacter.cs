@@ -10,19 +10,13 @@ namespace RPG.Characters
 {
     public abstract class BaseCharacter : MonoBehaviour, ISaveable
     {
-        /// <summary>
-        /// TOOD consider delete healthPoint. This variable is simply for debug purpose to see if changing health takes effect in game. In practice it has no effect on the game.
-        /// Need to see how to expose the Health system to the inspector
-        /// </summary>
-        [SerializeField] protected float healthPoints = 100f;
-        
         [SerializeField] protected float runningSpeed = 4f;
 
         public float RunningSpeed => runningSpeed;
-        protected Health healthSystem { get; private set; }
+        protected HealthSystem HealthSystemSystem { get; private set; }
         private Animator animator;
         private Collider characterCollider;
-        private IProvideStats stats;
+        private BaseStats stats;
 
         protected CharacterType charType;
 
@@ -45,21 +39,24 @@ namespace RPG.Characters
         private void Awake()
         {
             animator = GetComponent<Animator>();
-            stats = GetComponent<IProvideStats>();
-            healthPoints = stats.GetStat(Stat.Health);
-            healthSystem = Health.CreateHealth(healthPoints);
+            stats = GetComponent<BaseStats>();
+            HealthSystemSystem = HealthSystem.CreateHealth();
             characterCollider = GetCharacterCollider();    
             SetCharacterType();
         }
 
+        private void Start()
+        {
+            float initHp = stats.GetStat(Stat.Health);
+            HealthSystemSystem.SetHealth(initHp);
+        }
 
         public void TakeDamage(float damage)
         {
-            healthSystem.TakeDamage(damage);
+            HealthSystemSystem.TakeDamage(damage);
             OnDamageTakenEvent?.Invoke(this, GetPercentageHealth());
-            UpdateInspectorHealthPoints();
 
-            if(healthSystem.HealthPoints == 0 && IsAlive)
+            if(HealthSystemSystem.HealthPoints == 0 && IsAlive)
             {
                 TriggerDeath();
             }
@@ -67,12 +64,7 @@ namespace RPG.Characters
 
         private float GetPercentageHealth()
         {
-            return 100 * (healthSystem.HealthPoints / stats.GetStat(Stat.Health));
-        }
-
-        private void UpdateInspectorHealthPoints()
-        {
-            healthPoints = healthSystem.HealthPoints;
+            return 100 * (HealthSystemSystem.HealthPoints / stats.GetStat(Stat.Health));
         }
 
         protected virtual void TriggerDeath()
@@ -85,13 +77,13 @@ namespace RPG.Characters
 
         public object CaptureState()
         {
-            return healthSystem.HealthPoints;
+            return HealthSystemSystem.HealthPoints;
         }
 
         public void RestoreState(object state)
         {
             float savedHealth = (float)state;
-            TakeDamage(healthSystem.HealthPoints - savedHealth);
+            TakeDamage(HealthSystemSystem.HealthPoints - savedHealth);
         }
 
         public enum CharacterType

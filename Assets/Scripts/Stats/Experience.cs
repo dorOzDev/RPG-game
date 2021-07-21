@@ -1,12 +1,15 @@
 ﻿using RPG.Characters;
 using RPG.Saving;
+using System;
 using UnityEngine;
 
-namespace RPG.Resources
+namespace RPG.Stats
 {
     class Experience : MonoBehaviour, ISaveable
     {
-        [SerializeField] float expirencePoints = 0;
+        [SerializeField] private float expirencePoints = 0;
+
+        public float ExperiencePoints => expirencePoints;
 
         public delegate void OnExperienceGainedDelegate(float experience);
         public static event OnExperienceGainedDelegate OnExperienceGainedEvent;
@@ -14,11 +17,17 @@ namespace RPG.Resources
         private void OnEnable()
         {
             BaseCharacter.OnRewardExperienceEvent += GainExperience;
+            BaseStats.OnLevelUpEvent += ResetExp;
         }
 
         private void OnDisable()
         {
             BaseCharacter.OnRewardExperienceEvent -= GainExperience;
+        }
+
+        private void ResetExp()
+        {
+            expirencePoints = 0;
         }
 
         public void GainExperience(BaseCharacter baseCharacter,float experience)

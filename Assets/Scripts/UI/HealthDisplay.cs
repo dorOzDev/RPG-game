@@ -1,18 +1,10 @@
 ﻿using RPG.Characters;
 using System;
-using UnityEngine;
-using UnityEngine.UI;
 
 namespace RPG.UI
 {
-    class HealthDisplay : MonoBehaviour
+    class HealthDisplay : BaseDisplay
     {
-        private Text healthValueText;
-
-        private void Awake()
-        {
-            healthValueText = GetComponent<Text>();
-        }
 
         private void OnEnable()
         {
@@ -29,7 +21,7 @@ namespace RPG.UI
             if(character.CharType == BaseCharacter.CharacterType.Player)
             {
                 int roundedPercentage = (int)Math.Ceiling(percentage);
-                healthValueText.text = roundedPercentage + "%";
+                uiText.text = roundedPercentage + "%";
             }
         }
     }

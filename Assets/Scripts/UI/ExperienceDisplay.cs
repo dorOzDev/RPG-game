@@ -1,33 +1,33 @@
-﻿using RPG.Resources;
+﻿using RPG.Stats;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace RPG.UI
 {
-    class ExperienceDisplay : MonoBehaviour
+    class ExperienceDisplay : BaseDisplay
     {
-        private Text experienceText;
-
-        private void Awake()
-        {
-            experienceText = GetComponent<Text>();
-        }
-
         private void OnEnable()
         {
             Experience.OnExperienceGainedEvent += OnExperienceChanged;
+            BaseStats.OnLevelUpEvent += OnLevelUp;
+        }
+
+        private void OnLevelUp()
+        {
+            OnExperienceChanged(0);
         }
 
         private void OnDisable()
         {
             Experience.OnExperienceGainedEvent -= OnExperienceChanged;
+            BaseStats.OnLevelUpEvent += OnLevelUp;
         }
 
         private void OnExperienceChanged(float experience)
         {
-            if(experienceText != null)
+            if(uiText != null)
             {
-                experienceText.text = experience + "";
+                uiText.text = experience + "";
             }
         }
         
