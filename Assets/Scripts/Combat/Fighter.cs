@@ -158,7 +158,7 @@ namespace RPG.Combat
 
             Projectile projectile = projectileWeapon.SpawnProjectile(rightHandTransform);
 
-            projectile.Attack(target);
+            projectile.Attack(target, attacker);
         }
 
         public object CaptureState()

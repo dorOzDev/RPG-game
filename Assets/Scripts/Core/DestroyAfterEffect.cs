@@ -9,9 +9,8 @@ namespace RPG.Core
 {
     public class DestroyAfterEffect : MonoBehaviour
     {
-
         private ParticleSystem.MainModule particleSystem;
-
+        [SerializeField] private GameObject targetToDestroy;
         private void Awake()
         {
             particleSystem = GetComponent<ParticleSystem>().main;
@@ -20,7 +19,14 @@ namespace RPG.Core
 
         public void OnParticleSystemStopped()
         {
-            Destroy(gameObject);
+            if (targetToDestroy == null)
+            {
+                Destroy(targetToDestroy);
+            }
+            else
+            {
+                Destroy(this.gameObject);
+            }
         }
     }
 }

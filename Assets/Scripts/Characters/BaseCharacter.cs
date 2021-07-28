@@ -16,7 +16,7 @@ namespace RPG.Characters
         protected HealthSystem HealthSystemSystem { get; private set; }
         private Animator animator;
         private Collider characterCollider;
-        private BaseStats stats;
+        protected BaseStats stats;
 
         protected CharacterType charType;
 
@@ -30,8 +30,8 @@ namespace RPG.Characters
         /// <summary>
         /// For debug purpose I provide an event for when the health point of any character is effected
         /// </summary>
-        public delegate void OnDamageTakenDelegate(BaseCharacter baseCharacter, float percentage);
-        public static event OnDamageTakenDelegate OnDamageTakenEvent;
+        public delegate void OnHealthChangedDelegate(BaseCharacter baseCharacter, float percentage);
+        public static event OnHealthChangedDelegate OnHealthChangedEvent;
 
         public delegate void OnRewardExperienceDelegate(BaseCharacter character, float experience);
         public static event OnRewardExperienceDelegate OnRewardExperienceEvent;
@@ -40,7 +40,7 @@ namespace RPG.Characters
         {
             animator = GetComponent<Animator>();
             stats = GetComponent<BaseStats>();
-            HealthSystemSystem = HealthSystem.CreateHealth();
+            HealthSystemSystem = HealthSystem.CreateHealthSystem();
             characterCollider = GetCharacterCollider();    
             SetCharacterType();
         }
@@ -54,7 +54,7 @@ namespace RPG.Characters
         public void TakeDamage(float damage)
         {
             HealthSystemSystem.TakeDamage(damage);
-            OnDamageTakenEvent?.Invoke(this, GetPercentageHealth());
+            OnHealthChangedEvent?.Invoke(this, GetPercentageHealth());
 
             if(HealthSystemSystem.HealthPoints == 0 && IsAlive)
             {
@@ -73,6 +73,12 @@ namespace RPG.Characters
             animator.SetTrigger("die");
             characterCollider.enabled = false;
             IsAlive = false;
+        }
+
+        protected void HealDamage(float amountToHeal)
+        {
+            HealthSystemSystem.Heal(amountToHeal, stats.GetStat(Stat.Health));
+            OnHealthChangedEvent?.Invoke(this, GetPercentageHealth());
         }
 
         public object CaptureState()

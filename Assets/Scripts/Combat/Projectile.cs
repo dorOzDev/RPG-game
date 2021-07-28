@@ -3,6 +3,7 @@ using RPG.Characters;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using RPG.Stats;
 using UnityEngine;
 using static RPG.Characters.BaseCharacter;
 
@@ -16,11 +17,13 @@ namespace RPG.Combat
         [SerializeField] GameObject impactEffectPrefab;
 
         private BaseCharacter target;
+        private BaseCharacter attacker;
 
-        public void Attack(BaseCharacter target)
+        public void Attack(BaseCharacter target, BaseCharacter attacker)
         {
             transform.LookAt(target.transform);
             this.target = target;
+            this.attacker = attacker;
             StartCoroutine(ShootProjectileOverSpeed(target.transform));
         }
 
@@ -49,6 +52,7 @@ namespace RPG.Combat
         protected override void OnTriggerEnter(Collider other)
         {
             BaseCharacter hitCharacter = other.GetComponentInParent<BaseCharacter>();
+            BaseStats stats = attacker.GetComponent<BaseStats>();
             if(hitCharacter != null)
             {
                 if(hitCharacter.CharType == target.CharType)

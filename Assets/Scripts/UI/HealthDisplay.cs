@@ -8,12 +8,12 @@ namespace RPG.UI
 
         private void OnEnable()
         {
-            BaseCharacter.OnDamageTakenEvent += OnHealthChanged;
+            BaseCharacter.OnHealthChangedEvent += OnHealthChanged;
         }
 
         private void OnDisable()
         {
-            BaseCharacter.OnDamageTakenEvent -= OnHealthChanged;
+            BaseCharacter.OnHealthChangedEvent -= OnHealthChanged;
         }
 
         public void OnHealthChanged(BaseCharacter character, float percentage)

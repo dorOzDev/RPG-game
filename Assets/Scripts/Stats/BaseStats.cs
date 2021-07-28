@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using UnityEngine;
+﻿using UnityEngine;
 
 
 namespace RPG.Stats
@@ -12,8 +9,10 @@ namespace RPG.Stats
         //[SerializeField] private int levelSystem = 1;
         [SerializeField] private CharacterClass characterClass;
         [SerializeField] private Progression progression = null;
+        [SerializeField] private GameObject selfHealParticles;
 
         private LevelSystem levelSystem;
+        
         public delegate void OnLevelUpDelegate();
 
         public static event OnLevelUpDelegate OnLevelUpEvent;
@@ -63,9 +62,15 @@ namespace RPG.Stats
 
             if(expToNextLevel <= currExperience)
             {
+                LevelUpEffect();
                 levelSystem.LevelUp();
                 OnLevelUpEvent?.Invoke();
             }
+        }
+
+        private void LevelUpEffect()
+        {
+            Instantiate(selfHealParticles, transform);
         }
 
         public float GetStat(Stat stat)

@@ -1,6 +1,7 @@
 ﻿using RPG.Saving;
 using System;
 using System.Runtime.InteropServices;
+using RPG.Stats;
 using UnityEngine;
 
 
@@ -11,8 +12,7 @@ namespace RPG.Resources
         private float m_healthPoints = -1;
         public float HealthPoints => m_healthPoints;
 
-
-        public static HealthSystem CreateHealth()
+        public static HealthSystem CreateHealthSystem()
         {
             HealthSystem healthSystemScript = CreateInstance<HealthSystem>();
             return healthSystemScript;
@@ -24,6 +24,11 @@ namespace RPG.Resources
             {
                 m_healthPoints = health;
             }
+        }
+
+        public void Heal(float healPoints, float maxHealth)
+        {
+            m_healthPoints = Math.Min(healPoints + m_healthPoints, maxHealth);
         }
 
         public void TakeDamage(float damage)
